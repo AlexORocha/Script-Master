@@ -71,13 +71,20 @@ def relUmid(nc):
     PRESSURE = pressure(nc)
     RELS = []
 
-    pq0 = 379.90516
-    a2 = 17.2693882
-    a3 = 273.16
-    a4 = 35.86
+    svp1=611.2
+    svp2=17.67
+    svp3=29.65
+    svpt0=273.15
+    eps = 0.622
 
     for i in range(25):        
-        RH = (QVAPOR[i][0][0][0] * 100) / ( (pq0/PRESSURE[i]) * np.exp(a2*(TEMPS[i]-a3)/(TEMPS[i]-a4)) ) 
+        #RH = (QVAPOR[i][0][0][0] * 100) / ( (pq0/PRESSURE[i]) * np.exp(a2*(TEMPS[i]-a3)/(TEMPS[i]-a4)) ) 
+        q = QVAPOR[i][0][0][0]
+        p = PRESSURE[i] * 100
+        T = TEMPS[i] + 273
+
+        RH = 100 * (p*q/(q*(1.-eps) + eps))/(svp1*np.exp(svp2*(T-svpt0)/(T-svp3)))
+        #print(f'q: {q}, p: {p}, T: {T}')
         RELS.append(RH)
 
     return RELS
