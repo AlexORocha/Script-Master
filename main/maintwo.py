@@ -10,9 +10,8 @@ ARQ_NAME = 'wrfout_20200102.nc'
 
 ncfile = Dataset(DICT + ARQ_NAME)
 
-# Extract the pressure, geopotential height, and wind variables
+# CAPTURAR AS INFORMAÇÕES DE PRESSÃO
 p = getvar(ncfile, "pressure")
-z = getvar(ncfile, "z", units="dm")
 ua = getvar(ncfile, "ua", units="kt")
 va = getvar(ncfile, "va", units="kt")
 wspd = getvar(ncfile, "wspd_wdir", units="kts")[0,:]

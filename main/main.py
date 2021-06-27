@@ -1,34 +1,32 @@
-# IMPORTAÇÃO DAS BIBLIOTECAS E MÓDULOS ----------
-import wrf
-import pandas as pd
-import numpy as np
-import time
+# IMPORT DOS MÓDULOS ------------------------
+from utils.getvars import *
+from utils.params import *
+from utils.graphics import *
+#--------------------------------------------
 
-import plotly.figure_factory as FF
-import plotly.graph_objects as go
+def run():
+    # LEITURA DO ARQUIVO .NC ----------------
+    file = getvars()
+    # ---------------------------------------
 
-from scipy.spatial import Delaunay
-from netCDF4 import Dataset
-from scipy.io import netcdf
+    # VERIFICA A LATITUDE E LONGITUDE DO PLOT
+    lat, long = getlatlong(file)
+    # ---------------------------------------
 
-#from utils.params import *
-DICT = 'wrf_out/'
-ARQ_NAME = 'wrfout_20200102.nc'
-# -----------------------------------------------
+    # CAPTURA OS PARÂMETROS DE PLOT ---------
+    time = measTime(file)
+    temp = temperature(file)
+    press = pressure(file)
+    pot_temp = potTemp(file)
+    u, v = winds(file)
+    #rel_hum = relUmid(file)
+    #prec = precip(file)
+    # ---------------------------------------
 
-#def run():
+    # PLOT DA FIGURA ------------------------
+    plot(time, lat, long, temp, press, pot_temp, 1, u, v)
 
-# CAPTURA DOS DADOS A PARTIR DO ARQUIVO ---------
-#datain = Dataset(DICT + ARQ_NAME)
-nc = netcdf.netcdf_file(DICT + ARQ_NAME, 'r')
-# -----------------------------------------------
 
-vars = nc.variables
-dims = nc.dimensions
-c = nc.variables['T2'].dimensions 
-d = nc.variables['T2'].units 
-
-prec = vars['RAINPROD']
-
-print('Teste')
-
+    print(f"temp: {temp}, press: {press}, pot_temp: {pot_temp}, rel_hum: {1}")
+    print(f"lat: {lat}, long: {long}")
+    
