@@ -19,14 +19,13 @@ def run():
     press = pressure(file)
     pot_temp = potTemp(file)
     u, v = winds(file)
-    #rel_hum = relUmid(file)
-    #prec = precip(file)
+    rel_hum = relUmid(file)
+    specif_hum = espUmid(file)
+    prec = precip(file)
     # ---------------------------------------
 
     # PLOT DA FIGURA ------------------------
-    plot(time, lat, long, temp, press, pot_temp, 1, u, v)
+    plot(time, lat, long, temp, press, pot_temp, rel_hum, specif_hum, u, v, prec)
+    # ---------------------------------------
 
-
-    print(f"temp: {temp}, press: {press}, pot_temp: {pot_temp}, rel_hum: {1}")
-    print(f"lat: {lat}, long: {long}")
     

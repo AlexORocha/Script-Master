@@ -1,6 +1,7 @@
 from scipy.io import netcdf
 from utils.params import DICT, ARQ_NAME
 import wrf
+import numpy as np
 
 # FUNÇÃO PARA ABRIR O ARQUIVO
 def getvars():
@@ -29,13 +30,14 @@ def getlatlong(nc):
 
     return Lat, Long
 
+
 # FUNÇÃO PARA RETORNAR AS TEMPERATURAS
 def temperature(nc):
-    Temp = wrf.getvar(nc, "T", timeidx=wrf.ALL_TIMES, method="cat")
+    Temp = wrf.getvar(nc, "TSLB", timeidx=wrf.ALL_TIMES, method="cat")
     Temps = []
 
     for i in range(25):
-        Temps.append(Temp[i][0][0][0])
+        Temps.append(Temp[i][0][0][0] - 273)
 
     return Temps
 
@@ -64,21 +66,40 @@ def potTemp(nc):
 
 # FUNÇÃO PARA RETORNAR AS UMIDADES RELATIVAS
 def relUmid(nc):
-    REL_UM = wrf.getvar(nc, "RH", timeidx=wrf.ALL_TIMES, method="cat")
+    QVAPOR = wrf.getvar(nc, "QVAPOR", timeidx=wrf.ALL_TIMES, method="cat")
+    TEMPS = temperature(nc)
+    PRESSURE = pressure(nc)
     RELS = []
 
-    for i in range(25):
-        RELS.append(REL_UM[i][0][0][0])
+    pq0 = 379.90516
+    a2 = 17.2693882
+    a3 = 273.16
+    a4 = 35.86
+
+    for i in range(25):        
+        RH = (QVAPOR[i][0][0][0] * 100) / ( (pq0/PRESSURE[i]) * np.exp(a2*(TEMPS[i]-a3)/(TEMPS[i]-a4)) ) 
+        RELS.append(RH)
 
     return RELS
+
+# FUNÇÃO PARA RETORNAR AS UMIDADES ESPECÍFICAS
+def espUmid(nc):    
+    ESP_UM = wrf.getvar(nc, "QVAPOR", timeidx=wrf.ALL_TIMES, method="cat")
+    ESPS = []
+
+    for i in range(25):
+        ESPS.append(ESP_UM[i][0][0][0]*10**3)
+
+    return ESPS
 
 
 # FUNÇÃO PARA RETORNAR A PRECIPITAÇÃO
 def precip(nc):
-    precs = wrf.getvar(nc, "PR", timeidx=wrf.ALL_TIMES, method="cat")
+    precc = wrf.getvar(nc, "RAINC", timeidx=wrf.ALL_TIMES, method="cat")
+    precnc = wrf.getvar(nc, "RAINNC", timeidx=wrf.ALL_TIMES, method="cat")
     precss = []
 
     for i in range(25):
-        precss.append(precs[i][0][0][0])
+        precss.append(precc[i][0][0] + precnc[i][0][0])
 
     return precss
