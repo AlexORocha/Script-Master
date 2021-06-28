@@ -2,6 +2,9 @@ import matplotlib.pyplot as plt
 from matplotlib.cbook import get_sample_data
 import matplotlib.cm as cm
 import numpy as np
+import cartopy.crs as ccrs
+from utils.winds_function import windsvel
+
 
 def plot(TIME, LAT, LONG, TEMP, PRESS, POT_TEMP, REL_HUM, SPECIF_HUM, U, V, PREC):  
     # PLOT DA FIGURA GLOBAL ------------------------------
@@ -9,11 +12,15 @@ def plot(TIME, LAT, LONG, TEMP, PRESS, POT_TEMP, REL_HUM, SPECIF_HUM, U, V, PREC
     # ----------------------------------------------------
 
     # FIGURA DO VENTO ------------------------------------
+    vel_vento = windsvel(U, V)
+    ax0.barbs(TIME, PRESS, U, V)
+
     color = '0'
     ax0.set_title('\nPrevisão do BRAMS para\nLatitude %.5f, Longitude %.5f e Altura 760 m' %(LAT, LONG))
     ax0.set_ylabel('Vento (m/s) - Theta (k)')
     #ax0.plot(TIME, PRESS, '-0', color=color)
     ax0.tick_params(axis='y', labelcolor=color)
+    #ax0.barbs(U, V)
     ax0.grid()    
     # ----------------------------------------------------
 

@@ -18,9 +18,20 @@ def measTime(nc):
 # FUNÇÃO PARA RETURNAR U E V
 def winds(nc):
     u = wrf.getvar(nc,"U", timeidx=wrf.ALL_TIMES, method="cat")
-    v = wrf.getvar(nc,"V", timeidx=wrf.ALL_TIMES, method="cat")
+    U = []
 
-    return u, v
+    v = wrf.getvar(nc,"V", timeidx=wrf.ALL_TIMES, method="cat")
+    V = []
+
+    for i in range(25):
+        U_i = u[i][0][0][0]
+        U.append(U_i)
+        
+        V_i = v[i][0][0][0]
+        V.append(V_i)        
+
+
+    return U, V
 
 
 # FUNÇÃO PARA RETORNAR A LATITUDE
