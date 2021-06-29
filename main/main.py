@@ -26,6 +26,4 @@ def run():
 
     # PLOT DA FIGURA ------------------------
     plot(time, lat, long, temp, press, pot_temp, rel_hum, specif_hum, u, v, prec)
-    # ---------------------------------------
-
-    
+    # ---------------------------------------    

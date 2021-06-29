@@ -3,6 +3,7 @@ from utils.params import DICT, ARQ_NAME
 import wrf
 import numpy as np
 
+
 # FUNÇÃO PARA ABRIR O ARQUIVO
 def getvars():
     nc = netcdf.netcdf_file(DICT + ARQ_NAME, 'r') # ABRIR O ARQUIVO E ATRIBUIR AO OBJETO 'nc'
@@ -29,7 +30,6 @@ def winds(nc):
         
         V_i = v[i][0][0][0]
         V.append(V_i)        
-
 
     return U, V
 
@@ -72,7 +72,7 @@ def potTemp(nc):
     for i in range(25):
         Thetas.append(Theta[i][0][0])
 
-    return Theta
+    return Thetas
 
 
 # FUNÇÃO PARA RETORNAR AS UMIDADES RELATIVAS
@@ -100,6 +100,7 @@ def relUmid(nc):
 
     return RELS
 
+
 # FUNÇÃO PARA RETORNAR AS UMIDADES ESPECÍFICAS
 def espUmid(nc):    
     ESP_UM = wrf.getvar(nc, "QVAPOR", timeidx=wrf.ALL_TIMES, method="cat")
@@ -107,6 +108,8 @@ def espUmid(nc):
 
     for i in range(25):
         ESPS.append(ESP_UM[i][0][0][0]*10**3)
+
+    ESPS = [ESPS[0]], [ESPS[1]], [ESPS[2]], [ESPS[3]], [ESPS[4]], [ESPS[5]], [ESPS[6]], [ESPS[7]], [ESPS[8]], [ESPS[9]], [ESPS[10]], [ESPS[11]], [ESPS[12]] , [ESPS[13]], [ESPS[14]] ,[ESPS[15]] , [ESPS[16]] , [ESPS[17]], [ESPS[18]], [ESPS[19]], [ESPS[20]] , [ESPS[21]], [ESPS[22]], [ESPS[23]], [ESPS[24]]
 
     return ESPS
 
