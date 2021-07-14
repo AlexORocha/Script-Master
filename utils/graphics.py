@@ -34,7 +34,7 @@ def plot(TIME, LAT, LONG, TEMP, PRESS, POT_TEMP, REL_HUM, SPECIF_HUM, U, V, PREC
     #df = pd.DataFrame(zip(SPECIF_HUM[0], SPECIF_HUM[1],SPECIF_HUM[2],SPECIF_HUM[3],SPECIF_HUM[4],SPECIF_HUM[5],SPECIF_HUM[6],SPECIF_HUM[7],SPECIF_HUM[8],SPECIF_HUM[9],SPECIF_HUM[10],SPECIF_HUM[11],SPECIF_HUM[12],SPECIF_HUM[13],SPECIF_HUM[14],SPECIF_HUM[15],SPECIF_HUM[16],SPECIF_HUM[17],SPECIF_HUM[18],SPECIF_HUM[19],SPECIF_HUM[20], SPECIF_HUM[21],SPECIF_HUM[22],SPECIF_HUM[23],SPECIF_HUM[24]) , columns=TIME)
     #print(df)
     
-    #sns.heatmap(data=df, xticklabels=TIME, yticklabels=False, alpha=0.5, ax=ax0c, cbar = False)
+    #sns.heatmap(data=df, xticklabels=TIME, yticklabels=False, alpha=0.5, ax=ax0c, cbar = True)
     
     vel_vento = windsvel(U, V)
     ax0.barbs(TIME, vel_vento, U, V)
@@ -58,14 +58,22 @@ def plot(TIME, LAT, LONG, TEMP, PRESS, POT_TEMP, REL_HUM, SPECIF_HUM, U, V, PREC
     ax3.plot(TIME, REL_HUM, '-o', color=color)
     ax3.tick_params(axis='y', labelcolor=color)
     ax3.grid()
+
+    ax3b = ax3.twinx()
+    color = 'tab:red'    
+    ax3b.plot(TIME, SPECIF_HUM, '-o', color=color)
+    ax3b.set_ylabel('Umidade Específica (g/Kg)', color=color)
+    ax3b.tick_params(axis='y', labelcolor=color)
+
     # ----------------------------------------------------
 
 
     # FIGURA DA PRECIPITAÇÃO -----------------------------
     color = '0'
     ax4.set_ylabel('Precipitação (mm/hr)', color=color)
-    ax4.plot(TIME, PREC, '-o', color=color)
+    ax4.bar(TIME, PREC, color=color)
     ax4.tick_params(axis='y', labelcolor=color)
+    ax4.set_xlim([TIME[0],TIME[24]])
     ax4.grid()
     ax4.set_ylim([0, 100])
     # ----------------------------------------------------
@@ -78,7 +86,6 @@ def plot(TIME, LAT, LONG, TEMP, PRESS, POT_TEMP, REL_HUM, SPECIF_HUM, U, V, PREC
 
     fig.tight_layout()
 
-    #plt.savefig('Figure.png')
+    plt.savefig('Figure.png')
     
-
     plt.show()
