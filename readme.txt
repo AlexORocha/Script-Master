@@ -1,5 +1,5 @@
 Para iniciar o Script digite antes:
-python3 -m pip install requirements.txt
+pip install -r requirements.txt
 
 Criar a pasta
 wrf_out com o arquivo com o nome de wrfout_20200102.nc
